@@ -4,6 +4,12 @@ import time
 import threading
 import random
 
+# Если хотите скачать файл с гитхаба и не использовать библиотеку из проекта, нужно закоментировать это
+import sys, os
+path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
+sys.path.append(path + '\custom_lib')
+# 
+
 from threading import Thread
 from eventmanager import *
 
@@ -29,7 +35,10 @@ def eventRuka(robot_IP, robot_PORT=9559):
         "general": ["what a great day", "I'm not just some kind of robot as you might think, I'm something more"],
         "general_repeat": ["and you are good at copying me human", "good"],
         "general_move": ["ok let's go here", "lead me"],
-        "general_move_repeat": ["I'm tired, let's stand", "you walk well, for human of course. ha ha ha", "Where are we going? Don't say! Let it be a secret", "Color seem brihter when you are around", "not tired yet, human?", "don't hurt my hand", "you are doing good", "Not so fast"],
+        "general_move_repeat": ["I'm tired, let's stand", "you walk well, for human of course. ha ha ha", "Where are we going? Don't say! Let it be a secret",
+            "Color seem brihter when you are around", "not tired yet, human?", "don't hurt my hand", "you are doing good", "Not so fast", "it's nice to walking with you",
+            "It my best walking! On a scale from 1 to 10, it's an 11", "Any walk drives away gloomy thoughts", "when you are not in the mood, take a walk with people close to you in places dear to you",
+            "Today i want to walk to my full height: let's go to the park and sit on bench", "Let's go left or right"],
         "forward": ["ok let's go forward", "to infinity and beyond", "Not so fast"],
         "forward_repeat": ["wait i'm tired"],
         "backward": ["watch the rear", "ok let's go backward", "ouch ouch ouch ... be softy"],
@@ -201,6 +210,7 @@ class PhraseGenerator:
 
 
 # eventRuka("192.168.252.226", 9559)
+eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.80", 9559)
 # eventRuka("NaoThree.local", 9559)
