@@ -78,8 +78,8 @@ class Eventloop:
         [self._dispatchEventGroup(eg) for eg in self.event_groups if eg.predicate() and eg.cooldown_deadline <= time.time()]
 
     def _dispatchEventGroup(self, event_group):
-        self._updateCooldown(event_group)
-        [self._dispatchEvent(e) for e in event_group.events if not e.started_on_thread and e.predicate() and e.cooldown_deadline <= time.time()]
+        if [self._dispatchEvent(e) for e in event_group.events if not e.started_on_thread and e.predicate() and e.cooldown_deadline <= time.time()]:
+            self._updateCooldown(event_group)
 
     def _dispatchEvent(self, event):
         self._updateCooldown(event)
