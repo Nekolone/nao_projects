@@ -86,7 +86,6 @@ def eventRuka(robot_IP, robot_PORT=9559):
     #   eventHandler.addEvent(Event(lambda: Предикат(проверка), Функция, Аргументы, single_use=False, threadable=True, cooldown=0))
 
     #   Создание групп ивентов
-    generalGroup = EventGroup()
     motionGroup = EventGroup()
     ttsGroup = EventGroup(cooldown = 11)
     #   generalGroup.addEvent(Event(lambda: Предикат(проверка), Функция, Аргументы, single_use=False, threadable=True, cooldown=0))
@@ -210,7 +209,7 @@ class PhraseGenerator:
 
 
 # eventRuka("192.168.252.226", 9559)
-eventRuka("192.168.253.155", 9559)
+# eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.80", 9559)
 # eventRuka("NaoThree.local", 9559)
