@@ -1,10 +1,4 @@
 # -*- encoding: UTF-8 -*-
-
-# import threading
-# import random
-# import base64
-# import os
-# import httplib
 import time
 import socket
 import select
@@ -18,15 +12,6 @@ from naoqi import ALProxy
 from naoqi import ALBroker
 from naoqi import ALModule
 
-
-# Если хотите скачать файл с гитхаба и не использовать библиотеку из проекта, нужно закоментировать это
-# import sys
-# path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
-# sys.path.append(path + '\custom_lib')
-# from eventmanager import *
-# 
-
-# from threading import Thread
 
 
 
@@ -91,16 +76,18 @@ def sendEmail(receiver_address, message, sender_address, sender_pass):
     session.quit()
 
 
+#   Замените 
+#   receiver_address    Адрес по которому вы хотите получить фотокграфию
+#   resol               Качество желаемого результата 1-4 (320x240px - 2560x1920px)
+#   picFormat           Формат изображения jpg, png..
+#   subject             Тема письма
+#   mail_content        Текст письма
+
 makeAndSendPhotoToEmail(
-    robot_IP = "192.168.252.226", robot_PORT=9559, 
-    receiver_address="nikolafgh@gmail.com",
-    sender_address = "tsinaolab@gmail.com", sender_pass = "#TSIRiga2018!", 
+    robot_IP = "192.168.252.226", 
+    receiver_address="nikolafgh@gmail.com", 
     resol = 4, picFormat = "jpg",
     subject="A test mail sent by Python. It has an attachment.", 
     mail_content='''Hello,
     This is a simple mail. There is only text, no attachments are there The mail is sent using Python SMTP library.
     Thank You''')
-# eventRuka("192.168.253.155", 9559)
-# eventRuka("192.168.253.155", 9559)
-# eventRuka("192.168.253.80", 9559)
-# eventRuka("NaoThree.local", 9559)
