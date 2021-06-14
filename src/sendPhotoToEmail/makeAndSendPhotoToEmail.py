@@ -22,30 +22,49 @@ def makeAndSendPhotoToEmail(
     resol = 4, picFormat = "jpg",
     subject="Hello from NAO", mail_content="Hi, this is your photo"):
 
-    global tts, memory, motion, alife, touch, vision
+    global tts, memory, motion, alife, touch, vision, animation, anitext
     
     tts = ALProxy("ALTextToSpeech", robot_IP, robot_PORT)
+    anitext = ALProxy("ALAnimatedSpeech", robot_IP, robot_PORT)
     memory = ALProxy("ALMemory",robot_IP,robot_PORT)
     motion = ALProxy("ALMotion", robot_IP, robot_PORT)
-    # alife = ALProxy("ALAutonomousLife", robot_IP, robot_PORT)
+    alife = ALProxy("ALAutonomousLife", robot_IP, robot_PORT)
     touch = ALProxy("ALTouch", robot_IP, robot_PORT)
     vision = ALProxy("ALPhotoCapture", robot_IP, robot_PORT)
+    animation = ALProxy("ALAnimationPlayer", robot_IP, robot_PORT)
+    posture = ALProxy("ALRobotPosture", robot_IP, robot_PORT)
     # vision = ALProxy("ALVideoDevice", robot_IP, robot_PORT)
 
-    sendEmail(**preparedEmail(getPhoto(resol, picFormat), receiver_address, subject, mail_content, sender_address, sender_pass))
+    motion.stopMove()
+    posture.goToPosture("Stand",0.4)
+    alife.setState("safeguard")
+
+    sendEmail(**preparedEmail(getPhoto(robot_IP, resol, picFormat),picFormat, receiver_address, subject, mail_content, sender_address, sender_pass))
 
     tts.say("It was great! Have a nice day!")
+    alife.setState("solitary")
     # alife.setState("interactive")
 
-def getPhoto(resol, picFormat):
+def getPhoto(ip, resol, picFormat):
+
     vision.setResolution(resol)
     vision.setPictureFormat(picFormat)
+    tts.say("Free photo to everyone in 5 sec")
+    time.sleep(1)
+    tts.say("4")
+    time.sleep(1)
+    tts.say("3")
+    time.sleep(1)
+    tts.say("2")
+    time.sleep(1)
+    tts.say("1")
+
+    anitext.post.say("^start(animations/Stand/Waiting/TakePicture_1) Say cheese! ^wait(animations/Stand/Waiting/TakePicture_1)")
     vision.takePicture("/opt/aldebaran/var/www/apps/", "image", True)
- 
-    address = ("192.168.252.226", 80)        
+    
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(address)
-    s.sendall(b'GET /apps/image.'+ picFormat + b' HTTP/1.1\r\nHOST: 192.168.252.226\r\n\r\n')
+    s.connect((ip, 80))
+    s.sendall(b'GET /apps/image.' + picFormat + b' HTTP/1.1\r\nHOST: ' + ip + '\r\n\r\n')
     reply = b''
 
     while select.select([s], [], [], 3)[0]:
@@ -57,7 +76,7 @@ def getPhoto(resol, picFormat):
     image = reply[len(headers)+4:]
     return image
 
-def preparedEmail(image, receiver_address, subject, mail_content, sender_address, sender_pass):
+def preparedEmail(image, picFormat, receiver_address, subject, mail_content, sender_address, sender_pass):
 
     message = MIMEMultipart()
     message['Subject'] = subject
@@ -65,7 +84,9 @@ def preparedEmail(image, receiver_address, subject, mail_content, sender_address
     message['To'] = receiver_address
     message.preamble = subject
     message.attach(MIMEText(mail_content, "plain"))
-    message.attach(MIMEImage(image))
+    imge = MIMEImage(image, name = "pic.{}".format(picFormat))
+    imge.add_header('Content-Disposition', 'attachment; filename="pic.{}"'.format(picFormat))
+    message.attach(imge)
     return {"receiver_address":receiver_address, "message":message, "sender_address":sender_address, "sender_pass":sender_pass}
 
 def sendEmail(receiver_address, message, sender_address, sender_pass):
@@ -83,11 +104,15 @@ def sendEmail(receiver_address, message, sender_address, sender_pass):
 #   subject             Тема письма
 #   mail_content        Текст письма
 
+# ip = "192.168.253.155"
+# ip = "192.168.253.155"
+ip = "192.168.252.226"
+
 makeAndSendPhotoToEmail(
-    robot_IP = "192.168.252.226", 
-    receiver_address="nikolafgh@gmail.com", 
+    robot_IP = ip, 
+    receiver_address="stanly74@inbox.lv", 
     resol = 4, picFormat = "jpg",
     subject="A test mail sent by Python. It has an attachment.", 
     mail_content='''Hello,
-    This is a simple mail. There is only text, no attachments are there The mail is sent using Python SMTP library.
+    This is a simple mail. There is only text, no attachments are there The mail is sent using Python SMTP library. 
     Thank You''')

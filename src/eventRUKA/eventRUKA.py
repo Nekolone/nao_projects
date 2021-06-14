@@ -30,6 +30,8 @@ def eventRuka(robot_IP, robot_PORT=9559):
     alife = ALProxy("ALAutonomousLife", robot_IP, robot_PORT)
     touch = ALProxy("ALTouch", robot_IP, robot_PORT)
 
+
+
     global phrases      #   фразы при движении
     phrases = {
         "general": ["what a great day", "I'm not just some kind of robot as you might think, I'm something more"],
@@ -41,7 +43,7 @@ def eventRuka(robot_IP, robot_PORT=9559):
             "Today i want to walk to my full height: let's go to the park and sit on bench", "Let's go left or right"],
         "forward": ["ok let's go forward", "to infinity and beyond", "Not so fast"],
         "forward_repeat": ["wait i'm tired"],
-        "backward": ["watch the rear", "ok let's go backward", "ouch ouch ouch ... be softy"],
+        "backward": ["watch the rear", "ok let's go backward", "ouch ouch ouch ... be gentle"],
         "backward_repeat": ["wait i'm tired"],
         "turn_left": ["ok let's go left", "going west"],
         "turn_left_repeat": ["I got dizzy"],
@@ -209,7 +211,7 @@ class PhraseGenerator:
 
 
 # eventRuka("192.168.252.226", 9559)
-# eventRuka("192.168.253.155", 9559)
+eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.80", 9559)
 # eventRuka("NaoThree.local", 9559)
