@@ -71,7 +71,7 @@ class Eventloop:
         self.event_groups = [self.generalGroup]
         self.sleeptime = sleeptime
         self.threads = []
-        self.checkThreads = Thread(target=self._checkThreadStatus, args=()).start
+        self.executedAnEvent = False
 
     @selfloop
     def _checkEventGroups(self):
@@ -85,8 +85,10 @@ class Eventloop:
         self._updateCooldown(event)
         if not event.threadable:
             self._startFunction(event)
+            self.executedAnEvent = True
             return
         self._startFunctionOnThread(event)
+        self.executedAnEvent = True
         
     def _updateCooldown(self, item):
         item.cooldown_deadline = time.time() + item.cooldown
@@ -125,12 +127,24 @@ class Eventloop:
 
     def start(self):
         self.loop = True
-        self.checkThreads()
+        self.ct = Thread(target=self._checkThreadStatus, args=())
+        self.ct.start()
         self.ts = Thread(target=self._checkEventGroups) 
         self.ts.start()
 
     def join(self):
         self.ts.join()
+        self.ct.join()
+
+    def waitForEvent(self):
+        self.executedAnEvent = False
+        while not self.executedAnEvent:
+            time.sleep(0.5)
 
     def stop(self):
         self.loop = False
+    
+    def clearEvents(self):
+        self.generalGroup.events = []
+        to_remove = [g for g in self.event_groups if g is not self.generalGroup]
+        [self.event_groups.remove(i) for i in to_remove]

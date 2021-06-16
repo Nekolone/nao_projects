@@ -10,7 +10,6 @@ path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[
 sys.path.append(path + '\custom_lib')
 # 
 
-from threading import Thread
 from eventmanager import *
 
 from naoqi import ALProxy
