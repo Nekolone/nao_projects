@@ -12,19 +12,18 @@ from naoqi import ALProxy
 from naoqi import ALBroker
 from naoqi import ALModule
 
-import sys, os
-path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
-sys.path.append(path + '\custom_lib')
-from eventmanager import *
+# import sys, os
+# path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
+# sys.path.append(path + '\custom_lib')
+from eventmanager import binaryPredicate, changedValuePredicate
 from dialogmanager import *
 
 
-def makeAndSendPhotoToEmail(
-    robot_IP, robot_PORT=9559, 
-    receiver_address="nikolafgh@gmail.com",
-    sender_address = "tsinaolab@gmail.com", sender_pass = "#TSIRiga2018!", 
-    resol = 4, picFormat = "jpg",
-    subject="Hello from NAO", mail_content="Hi, this is your photo"):
+def makeAndSendPhotoToEmail(robot_IP, robot_PORT=9559):
+    # receiver_address="nikolafgh@gmail.com",
+    # sender_address = "tsinaolab@gmail.com", sender_pass = "#TSIRiga2018!", 
+    # resol = 4, picFormat = "jpg",
+    # subject="Hello from NAO", mail_content="Hi, this is your photo"):
 
 
     global tts, memory, motion, alife, touch, vision, animation, anitext, asr
@@ -58,10 +57,6 @@ def makeAndSendPhotoToEmail(
     tts.say("It was great! Have a nice day!")
     alife.setState("solitary")
 
-def naoExit():
-    eventHandler.stop()
-
-
 def no():
     global loop
     loop = False
@@ -71,7 +66,7 @@ def takePhoto(ip, resol = 4, picFormat = "jpg"):
     sender_address = "tsinaolab@gmail.com"
     sender_pass = "#TSIRiga2018!"
     # sender_pass = "D9D9A675682877172EE275458E2E721407DB"
-    receiver_address=["nikolafgh@gmail.com", "nikolafgh@inbox.lv", "drewzxcvbnm0@gmail.com"]
+    receiver_address=["nikolafgh@gmail.com", "nikolafgh@inbox.lv"]
     # cc = ["nikolafgh@inbox.lv", "drewzxcvbnm0@gmail.com"]
     resol = 4
     picFormat = "jpg"
@@ -111,6 +106,7 @@ def getPhoto(ip, resol = 4, picFormat = "jpg"):
 
     headers =  reply.split(b'\r\n\r\n')[0]
     image = reply[len(headers)+4:]
+
     return image
 
 def preparedEmail(image, picFormat, receiver_address, subject, mail_content, sender_address, sender_pass):
@@ -126,7 +122,7 @@ def preparedEmail(image, picFormat, receiver_address, subject, mail_content, sen
     imge.add_header('Content-Disposition', 'attachment; filename="pic.{}"'.format(picFormat))
     message.attach(imge)
     return {"receiver_address":receiver_address, "message":message, "sender_address":sender_address, "sender_pass":sender_pass}
-
+    
 def sendEmail(receiver_address, message, sender_address, sender_pass):
     session = smtplib.SMTP('smtp.gmail.com', 587)
     session.starttls()
@@ -137,7 +133,7 @@ def sendEmail(receiver_address, message, sender_address, sender_pass):
 
 
 # ip = "192.168.253.155"
-ip = "192.168.253.155"
+ip = "192.168.252.62"
 # ip = "192.168.252.226"
 # ip = "192.168.252.62"
 

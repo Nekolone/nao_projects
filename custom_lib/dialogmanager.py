@@ -2,7 +2,7 @@ from naoqi import ALProxy
 from naoqi import ALBroker
 from naoqi import ALModule
 
-from eventmanager import *
+from eventmanager import binaryPredicate, changedValuePredicate
 import time
 
 class DialogManager:

@@ -4,13 +4,13 @@ import time
 import threading
 import random
 
-# Если хотите скачать файл с гитхаба и не использовать библиотеку из проекта, нужно закоментировать это
-import sys, os
-path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
-sys.path.append(path + '\custom_lib')
+# Если нет доступа к PATH
+# import sys, os
+# path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
+# sys.path.append(path + '\custom_lib')
 # 
 
-from eventmanager import *
+from eventmanager import Eventloop, EventGroup, Event, binaryPredicate, changedValuePredicate
 
 from naoqi import ALProxy
 from naoqi import ALBroker
@@ -210,7 +210,7 @@ class PhraseGenerator:
 
 
 # eventRuka("192.168.252.226", 9559)
-eventRuka("192.168.253.155", 9559)
+eventRuka("192.168.252.62", 9559)
 # eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.80", 9559)
 # eventRuka("NaoThree.local", 9559)
