@@ -7,6 +7,7 @@ from pptx import Presentation
 def main(session):
     tts = session.service("ALTextToSpeech")
     tts.setVoice("Alyona22Enhanced")
+    print tts.getAvailableVoices()
     filePath = "C:\\Users\\tsi_nao\\Desktop\\TESTTHIS.pptx"
     ppoint = win32.gencache.EnsureDispatch('Powerpoint.Application')
     ppoint.Visible = True

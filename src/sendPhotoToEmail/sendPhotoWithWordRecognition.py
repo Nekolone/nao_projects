@@ -133,7 +133,7 @@ def sendEmail(receiver_address, message, sender_address, sender_pass):
 
 
 # ip = "192.168.253.155"
-ip = "192.168.252.62"
+ip = "192.168.252.226"
 # ip = "192.168.252.226"
 # ip = "192.168.252.62"
 
