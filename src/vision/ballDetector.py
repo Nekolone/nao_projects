@@ -25,9 +25,9 @@ def pprint(a):
     print a
 
 def main():
-    red = Color("red", [160, 0, 0, 50], lambda x: pprint("onRed"))
-    green = Color("green", [0, 150, 0, 50], lambda x: pprint("onGreen"))
-    blue = Color("blue", [0, 0, 150, 50], lambda x: pprint("onBlue"))
+    red = Color("red", [200, 0, 0, 50], lambda x: pprint("onRed"))
+    green = Color("green", [0, 200, 0, 50], lambda x: pprint("onGreen"))
+    blue = Color("blue", [0, 0, 200, 50], lambda x: pprint("onBlue"))
     # yellow = Color("yellow", [150, 150, 0, 50], lambda x: pprint("onYellow"))
     # cyan = Color("cyan", [0, 150, 150, 25], lambda x: pprint("onCyan"))
     # purple = Color("purple", [150, 0, 150, 50], lambda x: pprint("onPurple"))
@@ -46,7 +46,10 @@ class ColorDetector:
         self.colors = colors
         self.loop = True      
         self.blob = session.service("ALColorBlobDetection")
+        # print self.blob.getCircle()
+        # print self.blob.getAutoExposure()
         self.blob.setObjectProperties(50, diameter, "Circle")
+        # self.blob.setAutoExposure(True)
         self.subscriber = memory.subscriber("ALTracker/ColorBlobDetected")
         # self.subscriber.signal.connect(self.onBlobDetection)
     
@@ -57,6 +60,8 @@ class ColorDetector:
                 self.blob.setColor(*color.rgb)
                 dis = self.subscriber.signal.connect(color.callback)
                 print "checking " + color.name + "_---------------------"
+                # print self.blob.getCircle()
+                # print self.blob.getAutoExposure()
                 time.sleep(0.2)
                 self.subscriber.signal.disconnect(dis)
 

@@ -1,337 +1,167 @@
-# -*- encoding: UTF-8 -*-
-
-
-import time
-import qi
-import vision_definitions
-
-import PIL
-from PIL import Image
-
-import cv2
+from collections import deque
+from imutils.video import VideoStream
 import numpy as np
+import argparse
+import cv2
+import imutils
+import time
 
-from naoqi import ALModule, ALBroker
-
-
-
-
-
-
-class ColorDetector(ALModule):
-    """
-    EBANIY TI ABEMA
-    """
-    def __init__(self, name, color = "red", diameter = 1):
-        self.colors = {"red":[255 - 15, 30, 30, 50],"blue":[30, 30, 255 - 15, 50],"yellow":[255 - 15, 255 - 15, 30, 50]}
-        self.name = name
-        ALModule.__init__(self, self.name)
-
-        if color not in ["red","blue","yellow"]:
-            raise Exception ("suka, bil bi ti chelovekom, EBANIY TI ABEMA")
-        blob.setColor(*self.colors[color])
-        blob.setObjectProperties(20, diameter, "Circle")
-        memory.subscribeToEvent("ALTracker/ColorBlobDetected", self.name, "onBlobDetection")
-        global videoClient
-        videoClient = video.subscribeCamera("myCam",0,3,11,5)
-
-
-    # @staticmethod
-    def onBlobDetection(self, eventName, value, subscriberIdentifier):
-        """
-        EBANIY TI ABEMA, TVOU DOCHKU
-        """
-        print "AHH, i see them"
-
-
-def main():
-
-    videoClient = video.subscribeCamera("myCam",0,4,11,1)
-    naoImage = video.getImageRemote(videoClient)
-    video.unsubscribe(videoClient)
-
-    imageWidth = naoImage[0]
-    imageHeight = naoImage[1]
-    array = naoImage[6]
-    image_string = str(bytearray(array))
-    im = Image.frombytes("RGB", (imageWidth, imageHeight), image_string)
-    im.save("camImage.jpg", "JPEG")
-
-
-    # global bub, bub2
-    # bub = ColorDetector("bub","red")
-    # time.sleep(5)
-    # blob.setColor(30, 30, 255 - 15, 50)
-
-    # try:
-    #     while True:
-    #         print " "
-    #         time.sleep(1)
-    # except KeyboardInterrupt:
-    #     print "Interrupted by user, stopping"
-    #     # vr.unsubscribe("ALTracker/ColorBlobDetected")
-    #     #stop
-    #     video.unsubscribe(videoClient)
-    #     # sys.exit(0)
-
-global video, memory, blob, broker
-
-
-ip = "192.168.252.226"
-# ip = "192.168.252.62"
-
-session = qi.Session()
-session.connect("tcp://" + ip + ":" + "9559")
-video = session.service( "ALVideoDevice" )   
-memory = session.service( "ALMemory" )
-blob = session.service("ALColorBlobDetection")
-broker = ALBroker("pythonMotionBroker", "0.0.0.0", 0, ip, 9559)
-
-
-main()
-# import time
 # import qi
-# import vision_definitions
 
-# import PIL
-# from PIL import Image
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-v", "--video",
+    help="path to the (optional) video file")
+ap.add_argument("-b", "--buffer", type=int, default=64,
+    help="max buffer size")
+args = vars(ap.parse_args())
 
-# import cv2
-# import numpy as np
+greenLower = (40, 150, 70)
+greenUpper = (70, 255, 255)
 
+blueLower = (100,150,50)
+blueUpper = (128,255,255)
+# blueLower = (116,50,50)
+# blueUpper = (130,255,255)
 
-# class (ALModule)
+# cyanLower = (90,150,170)
+# cyanUpper = (114,255,255)
+# redLower = (45, 150, 70)
+# redUpper = (64, 255, 255)
+pts = deque(maxlen=args["buffer"])
+# if a video path was not supplied, grab the reference
+# # to the webcam
+# if not args.get("video", False):
+#     vs = VideoStream(src=0).start()
 
+# otherwise, grab a reference to the video file
 
-# def main():
-#     global tts, memory, video
-    
-#     tts = session.service( "ALTextToSpeech" )
-#     video = session.service( "ALVideoDevice" ) 
-#     # vr = session.service("ALVisionRecognition")   
-#     memory = session.service( "ALMemory" )
-#     cbd = session.service("ALColorBlobDetection")
-#     # tracker = session.service( "ALTracker" )
-#     # motion = session.service("ALMotion")
-#     # posture = session.service("ALRobotPosture")
-#     # wr = session.service("ALWorldRepresentation")
+# vs = cv2.VideoCapture("tcp://192.168.252.226:3000")
+# allow the camera or video file to warm up
+time.sleep(2.0)
 
-#     # resolution = vision_definitions.kQQVGA
-#     # colorSpace = vision_definitions.kYUVColorSpace
+# global video
 
-#     # resolution = 2
-#     # colorSpace = 11
-#     # fps = 20
-
-#     videoClient = video.subscribeCamera("myCam",0,3,11,5)
-#     naoImage = video.getImageRemote(videoClient)
-#     # video.unsubscribe(videoClient)
-
-#     imageWidth = naoImage[0]
-#     imageHeight = naoImage[1]
-#     array = naoImage[6]
-#     image_string = str(bytearray(array))
-#     im = Image.frombytes("RGB", (imageWidth, imageHeight), image_string)
-
-#     cbd.setColor(255-15,0,0, 255)
-#     cbd.setObjectProperties(10, 0.1, "Unknown")
-#     memory.subscribeToEvent("ALTracker/ColorBlobDetected", "BallDetector", "onBlobDetection")
-#     print("BallDetector initialized!")
-#     # threading.Lock()
-
-#     got_color = False
-
-#     try:
-#         while True:
-#             print "helpme"
-#             time.sleep(1)
-#     except KeyboardInterrupt:
-#         print "Interrupted by user, stopping"
-#         # vr.unsubscribe("ALTracker/ColorBlobDetected")
-#         #stop
-#         video.unsubscribe(videoClient)
-#         sys.exit(0)
-
-
-# def onBlobDetection(eventName, value, subscriberIdentifier):
-#     print "HELPMEEEE"
-#     positionInFrameRobot = value[1]
-#     print("Ball detected.")
-#     timestampUS = value[2][1]
-#     tts.say("o ball")
-
-#     # im.save("camImage.png", "PNG")
-
-#     # img = cv2.imread("C:\\Users\\tsi_nao\\Desktop\\nao_projects\\camImage.png", cv2.IMREAD_GRAYSCALE)
-
-#     # cv2.imshow("Input Image", img)
-#     # cv2.waitKey(0)
-
-
-#     # params = cv2.SimpleBlobDetector_Params()
-
-#     # params.filterByColor = 1
-#     # params.blobColor = 255
-#     # params.filterByArea = 1
-#     # params.minArea = 0
-#     # params.maxArea = 10000
-#     # params.filterByCircularity=0
-#     # params.filterByConvexity  =0
-#     # params.filterByInertia  =0
-
-
-
-
-
-#     # detector = cv2.SimpleBlobDetector_create()
-#     # keyppoint_info = detector.detect(img)
-#     # blank_img = np.zeros((1,1))
-#     # blobs = cv2.drawKeypoints(img, keyppoint_info, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
-#     # cv2.imshow("displaying blobs", blobs)
-#     # cv2.waitKey(0)
-#     # cv2.destroyAllWindows()
-
-    
-
-
-# # ip = "192.168.253.155"
-# # ip = "192.168.252.62"
 # ip = "192.168.252.226"
 # # ip = "192.168.252.62"
 
 # session = qi.Session()
 # session.connect("tcp://" + ip + ":" + "9559")
+# video = session.service( "ALVideoDevice" )   
+# memory = session.service( "ALMemory" )
 
-
-# main()
-
-
-
-
-    # print 'getting images in remote'
-    # for i in range(0, 20):
-    #     print "getting image " + str(i)
-    #     video.getImageRemote(nameId)
-    #     time.sleep(0.05)
-
-    # video.unsubscribe(nameId)
+# qi.os.system("nao stop")
 
 
 
-#     cbd.setColor(255-15,0,0, 255)
-#     cbd.setObjectProperties(10, 0.1, "Unknown")
-#     memory.subscribeToEvent("ALTracker/ColorBlobDetected", "colorDetector", "onBlobDetection")
-#     print("BallDetector initialized!")
-#     threading.Lock()
+# videoClient = video.subscribeCamera("myCam",0,2,13,30)
+# print video.getSubscribers()
 
-#     got_color = False
+vs = cv2.VideoCapture("tcp://192.168.252.226:3000")
 
-#     try:
-#         while True:
-#             print "helpme"
-#             time.sleep(1)
-#     except KeyboardInterrupt:
-#         print "Interrupted by user, stopping"
-#         # vr.unsubscribe("ALTracker/ColorBlobDetected")
-#         #stop
-#         sys.exit(0)
-
-
-# def onBlobDetection(eventName, value, subscriberIdentifier):
-#     positionInFrameRobot = value[1]
-#     print("Ball detected.")
-#     timestampUS = value[2][1]
-#     tts.say("o ball")
-
-
-# def on_blob_detected(value, smt, smt2):
-#     print value
-#     print smt
-#     print smt2
-#     global got_color
-#     if value == []:  # empty value when the recognized object disappears
-#         got_color = False
-#     elif not got_color:  # only speak the first time a recognized object appears
-#         got_color = True
-#         print "I saw a this! "
-#         tts.say("I saw a this! ")
-#         # First Field = TimeStamp.
-#         timeStamp = value[0]
-#         print "TimeStamp is: " + str(timeStamp)
-#         object_data = value[1]
-#         print "Object data: " + str(object_data)
-
-
-
-
-
-
-
-
-
+while True:
+    # naoVideo = video.getImagesRemote(videoClient)
     
-    # # print mem.getDataListName()
-    # # print mem
-    # a=[]
-
-    # for i in range(30):
-    #     time.sleep(1)
-    #     a.append ({
-    #         "autonomous/state": mem.getData("autonomous/state"),
-    #         "fall-recovery/solitary": mem.getData("fall-recovery/solitary"),
-    #         "fall-recovery/failed": mem.getData("fall-recovery/failed"),
-    #         "AppsAnalytics/stats": mem.getData("AppsAnalytics/stats"),
-    #         "fall-recovery/previousPostureFamily": mem.getData("fall-recovery/previousPostureFamily"),
-    #         "fall-recovery/recover": mem.getData("fall-recovery/recover"),
-    #         # "fall-recovery", mem.getData("fall-recovery"),
-    #         "Launchpad/Posture": mem.getData("Launchpad/Posture"),
-    #         "Launchpad/WavingDetection": mem.getData("Launchpad/WavingDetection"),
-    #         "Launchpad/PostureFamily": mem.getData("Launchpad/PostureFamily"),
-    #         "Launchpad/RobotFellRecently": mem.getData("Launchpad/RobotFellRecently"),
-    #         "ALTracker/BaseTracking": mem.getData("ALTracker/BaseTracking"),
-    #         "BarcodeReader/BarcodeDetected": mem.getData("BarcodeReader/BarcodeDetected"),
-    #         "ALTracker/ActiveTargetChanged": mem.getData("ALTracker/ActiveTargetChanged"),
-    #         "ALTracker/TargetDetected": mem.getData("ALTracker/TargetDetected"),
-    #         "ALAnimatedSpeech/EndOfAnimatedSpeech": mem.getData("ALAnimatedSpeech/EndOfAnimatedSpeech"),
-    #         "ALTracker/ObjectMoveTo": mem.getData("ALTracker/ObjectMoveTo"),
-    #         "ALTracker/TargetLost": mem.getData("ALTracker/TargetLost"),
-    #         "ALTracker/ObjectLookAt": mem.getData("ALTracker/ObjectLookAt"),
-    #         "RecoLatency": mem.getData("RecoLatency"),
-    #         "SpeechDetected": mem.getData("SpeechDetected"),
-    #         "ALTextToSpeech/TextInterrupted": mem.getData("ALTextToSpeech/TextInterrupted"),
-    #         "ALTextToSpeech/CurrentSentence": mem.getData("ALTextToSpeech/CurrentSentence"),
-    #         "ALTextToSpeech/CurrentWor": mem.getData("ALTextToSpeech/CurrentWord"),
-    #         "ALTextToSpeech/PositionOfCurrentWord": mem.getData("ALTextToSpeech/PositionOfCurrentWord"),
-    #         "ALTextToSpeech/CurrentBookMark": mem.getData("ALTextToSpeech/CurrentBookMark"),
-    #         "ALTextToSpeech/TextDone": mem.getData("ALTextToSpeech/TextDone"),
-    #         "_ALBrightnessStatistics/Std": mem.getData("_ALBrightnessStatistics/Std"),
-    #         "VisualSpaceHistory/VisualGrid/Data": mem.getData("VisualSpaceHistory/VisualGrid/Data"),
-    #         "PictureDetected": mem.getData("PictureDetected"),
-    #         "FaceDetected": mem.getData("FaceDetected"),
-    #         "FaceDetection/FaceDetected": mem.getData("FaceDetection/FaceDetected"),
-    #         "redBallDetected": mem.getData("redBallDetected"),
-    #         "ALTracker/ColorBlobDetected": mem.getData("ALTracker/ColorBlobDetected"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeZZeroOffset/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeZZeroOffset/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeZ/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeZ/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeY/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeY/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeXZeroOffset/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeXZeroOffset/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeX/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeX/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyrZ/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyrZ/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyrY/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyrY/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyrX/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyrX/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeYZeroOffset/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeYZeroOffset/Sensor/Value"),
-    #         "Device/SubDeviceList/InertialSensor/GyroscopeZZeroOffset/Sensor/Value": mem.getData("Device/SubDeviceList/InertialSensor/GyroscopeZZeroOffset/Sensor/Value"),
-    #         "ALMotion/RobotIsStand": mem.getData("ALMotion/RobotIsStand"),
-    #         "ALMotion/Safety/RobotOnASlope": mem.getData("ALMotion/Safety/RobotOnASlope"),
-    #         "ALMotion/RobotPushed": mem.getData("ALMotion/RobotPushed")
-    #     })
-
-    # for ky in a[0].keys():
-    #     print ky + "-> \\/"
-    #     for pr in a:
-    #         print pr[ky]
+    # grab the current frame
+        # frame = video.getDirectRawImageRemote(videoClient)
+        # video.releaseDirectRawImage(videoClient)
 
 
+        # frame = np.reshape(frame[6],(-1,frame[0],3))
+        # print len(frame)
+        # print frame
 
+    frame = vs.read()
+    frame = frame[1]
+
+
+    # if we are viewing a video and we did not grab a frame,
+    # then we have reached the end of 
+    # the video
+    # resize the frame, blur it, and convert it to the HSV
+    if frame is None:
+        print ("help me")
+        break
+    # color space
+    frame = imutils.resize(frame, width=640)
+    blurred = cv2.GaussianBlur(frame, (11, 11), 0)
+    hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+    print len(hsv)
+    # construct a mask for the color "green", then perform
+    # a series of dilations and erosions to remove any small
+    # blobs left in the mask
+    gMask = cv2.inRange(hsv, greenLower, greenUpper)
+    bMask = cv2.inRange(hsv, blueLower, blueUpper)
+
+    mask = gMask | bMask
+    mask = cv2.erode(mask, None, iterations=2)
+    mask = cv2.dilate(mask, None, iterations=2)
+
+    # find contours in the mask and initialize the current
+    # (x, y) center of the ball
+    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
+    center = None
+    col = None
+    # only proceed if at least one contour was found
+    if len(cnts) > 0:
+        # find the largest contour in the mask, then use
+        # it to compute the minimum enclosing circle and
+        # centroid
+        for c in cnts:
+            if cv2.contourArea(c) < 100:
+                continue
+            
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            M = cv2.moments(c)
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+            col = np.argmax(frame[center[1],center[0]])
+            print col
+
+            # only proceed if the radius meets a minimum size
+            # if radius > 10:
+                # draw the circle and centroid on the frame,
+                # then update the list of tracked points
+            cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
+            cv2.circle(frame, center, 2, (0, 0, 255), -1)
+    # update the points queue
+    pts.appendleft(center)
+    # bgrCheck = frame[center[1],center[0]]
+
+    # col = max(bgrCheck)
+    print col
+    # col = np.argmax(bgrCheck)
+    # bgrCheck.index(max(bgrCheck))
+
+    if col == 0:
+        print "blue"
+    elif col == 1:
+        print "green"
+    # elif col == 2:
+    #     print "red"
+
+
+    # loop over the set of tracked points
+    # for i in range(1, len(pts)):
+    #     # if either of the tracked points are None, ignore
+    #     # them
+    #     if pts[i - 1] is None or pts[i] is None:
+    #         continue
+    #     # otherwise, compute the thickness of the line and
+    #     # draw the connecting lines
+    #     thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
+    #     cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+    # show the frame to our screen
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
+    # if the 'q' key is pressed, stop the loop
+    if key == ord("q"):
+        break
+# if we are not using a video file, stop the camera video stream
+
+# otherwise, release the camera
+# vr.release()
+# video.unsubscribe(videoClient)
+# close all windows
+cv2.destroyAllWindows()
 
