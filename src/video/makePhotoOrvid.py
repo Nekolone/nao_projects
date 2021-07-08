@@ -3,13 +3,14 @@ import qi
 import PIL
 from PIL import Image
 
-ip = "192.168.252.226"
+# ip = "192.168.252.226"
+ip = "192.168.253.155"
 
 session = qi.Session()
 session.connect("tcp://" + ip + ":" + "9559")
 
 video = session.service( "ALVideoDevice" )   
-videoClient = video.subscribeCamera("myCam",1,2,11,10)
+videoClient = video.subscribeCamera("myCam",0,2,11,10)
 naoImage = video.getImageRemote(videoClient)
 video.releaseImage(videoClient)
 # naoImage = video.getDirectRawImageRemote(videoClient)

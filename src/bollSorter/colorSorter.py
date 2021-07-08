@@ -17,10 +17,10 @@ def main():
     alife.setState("safeguard")
     posture.goToPosture("Stand",0.4)
 
-    motion.stiffnessInterpolation("LShoulderPitch",0.5,0.5)
-    motion.stiffnessInterpolation("LElbowRoll",0.5,0.5)
-    motion.stiffnessInterpolation("LElbowYaw",0.5,0.5)
-    motion.stiffnessInterpolation("LWristYaw",0.5,0.5)    
+    motion.stiffnessInterpolation("LShoulderPitch",0.3,0.5)
+    motion.stiffnessInterpolation("LElbowRoll",0.3,0.5)
+    motion.stiffnessInterpolation("LElbowYaw",0.3,0.5)
+    motion.stiffnessInterpolation("LWristYaw",0.3,0.5)    
     motion.stiffnessInterpolation("LHand",0.3,0.5)
     motion.setAngles("LShoulderPitch", 1, 0.1) 
     motion.setAngles("LElbowRoll", -1.4, 0.1) 
@@ -28,7 +28,7 @@ def main():
     motion.setAngles("LWristYaw", -1.8, 0.4)
     motion.openHand("LHand")
     motion.setAngles("HeadYaw", 0.6, 0.1)
-    tts.say("give me object and i say what color it is")
+    tts.say("give me an object and i say what color it is")
     time.sleep(2)
 
     # print objectColorDetector.getColor()
@@ -52,16 +52,20 @@ def checkColor():
     dropThisBall(objColor)
 
 def dropThisBall(color):
+    if color == []:
+        tts.say("but i have no idea what it is")
+        motion.openHand("LHand")    
+        return
     if color[0] == "green":
         motion.setAngles("LElbowYaw", -1, 0.1)
-        motion.setAngles("LWristYaw", 1.4, 0.4)
+        motion.setAngles("LWristYaw", 1.2, 0.4)
     if color[0] == "blue":
         motion.setAngles("LElbowYaw", -2, 0.1)
         motion.setAngles("LWristYaw", 1.7, 0.4)
     time.sleep(1)
     motion.openHand("LHand")    
     motion.stiffnessInterpolation("LHand",0.3,0.5)
-    motion.setAngles("LElbowYaw", -1.5, 0.4)
+    motion.setAngles("LElbowYaw", -1.5, 0.1)
     motion.setAngles("LWristYaw", -1.8, 0.4)
     tts.say("give me next object")
     # eventHandler.stop()
