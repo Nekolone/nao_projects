@@ -39,6 +39,8 @@ class PictureColorDetector:
         col = None
         detectedColors = []
         
+        if len(cnts) == 0:
+            return detectedColors
         c = max(cnts, key=cv2.contourArea)
         if cv2.contourArea(c) < self.size:
             return detectedColors        

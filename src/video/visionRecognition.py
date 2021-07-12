@@ -7,6 +7,7 @@ import imutils
 import time
 
 
+ap = argparse.ArgumentParser()
 ap.add_argument("-b", "--buffer", type=int, default=64, help="max buffer size")
 args = vars(ap.parse_args())
 
@@ -20,8 +21,8 @@ pts = deque(maxlen=args["buffer"])
 # Use this to satrt stream
 # gst-launch-0.10 -v v4l2src device=/dev/video-top ! video/x-raw-yuv,width=640,height=480,framerate=30/1 ! ffmpegcolorspace ! jpegenc ! multipartmux! tcpserversink port=3000
 
-# vs = cv2.VideoCapture("tcp://192.168.252.226:3000")
-vs = cv2.VideoCapture("tcp://192.168.253.155:3000")
+vs = cv2.VideoCapture("tcp://192.168.252.226:3000")
+# vs = cv2.VideoCapture("tcp://192.168.253.155:3000")
 
 while True:
     
@@ -85,15 +86,15 @@ while True:
 
 
     # loop over the set of tracked points
-    # for i in range(1, len(pts)):
-    #     # if either of the tracked points are None, ignore
-    #     # them
-    #     if pts[i - 1] is None or pts[i] is None:
-    #         continue
-    #     # otherwise, compute the thickness of the line and
-    #     # draw the connecting lines
-    #     thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-    #     cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+    for i in range(1, len(pts)):
+        # if either of the tracked points are None, ignore
+        # them
+        if pts[i - 1] is None or pts[i] is None:
+            continue
+        # otherwise, compute the thickness of the line and
+        # draw the connecting lines
+        thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
+        cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
     # show the frame to our screen
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF

@@ -45,7 +45,6 @@ def main():
 def checkColor():    
     motion.stiffnessInterpolation("LHand",0.3,0.5)
     motion.closeHand("LHand")
-    motion.stiffnessInterpolation("LHand",1,0.5)
     tts.say("hmm what is this?")
     objColor = objectColorDetector.getColor()
     tts.say("i think this is {} object".format(objColor))
@@ -64,7 +63,7 @@ def dropThisBall(color):
         motion.setAngles("LWristYaw", 1.7, 0.4)
     time.sleep(1)
     motion.openHand("LHand")    
-    motion.stiffnessInterpolation("LHand",0.3,0.5)
+    # motion.stiffnessInterpolation("LHand",0.3,0.5)
     motion.setAngles("LElbowYaw", -1.5, 0.1)
     motion.setAngles("LWristYaw", -1.8, 0.4)
     tts.say("give me next object")

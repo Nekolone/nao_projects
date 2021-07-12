@@ -66,7 +66,7 @@ def takePhoto(ip, resol = 4, picFormat = "jpg"):
     sender_address = "tsinaolab@gmail.com"
     sender_pass = "#TSIRiga2018!"
     # sender_pass = "D9D9A675682877172EE275458E2E721407DB"
-    receiver_address=["nikolafgh@gmail.com", "nikolafgh@inbox.lv"]
+    receiver_address=["artis.bertulis@gmail.com"]
     # cc = ["nikolafgh@inbox.lv", "drewzxcvbnm0@gmail.com"]
     resol = 4
     picFormat = "jpg"
@@ -93,6 +93,7 @@ def getPhoto(ip, resol = 4, picFormat = "jpg"):
 
     anitext.post.say("^start(animations/Stand/Waiting/TakePicture_1) Say cheese! ^wait(animations/Stand/Waiting/TakePicture_1)")
     vision.takePicture("/opt/aldebaran/var/www/apps/", "image", True)
+    
     
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ip, 80))
