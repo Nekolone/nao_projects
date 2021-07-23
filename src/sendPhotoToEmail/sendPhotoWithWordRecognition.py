@@ -66,7 +66,7 @@ def takePhoto(ip, resol = 4, picFormat = "jpg"):
     sender_address = "tsinaolab@gmail.com"
     sender_pass = "#TSIRiga2018!"
     # sender_pass = "D9D9A675682877172EE275458E2E721407DB"
-    receiver_address=["artis.bertulis@gmail.com"]
+    # receiver_address=["artis.bertulis@gmail.com"]
     # cc = ["nikolafgh@inbox.lv", "drewzxcvbnm0@gmail.com"]
     resol = 4
     picFormat = "jpg"

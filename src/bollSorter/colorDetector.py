@@ -24,11 +24,13 @@ class PictureColorDetector:
         video.releaseImage(self.videoClient)
 
         frame = np.reshape(img[6],(-1,img[0],3))
-        frame = imutils.resize(frame, width=640)
+        frame = frame[:, 150:]
+        frame = frame[:, :-150]
+        # frame = imutils.resize(frame, width=640)
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
         # mask = np.zeros((img[1],img[0]),dtype = int)
-        mask = np.zeros((img[1],img[0]), np.uint8)
+        mask = np.zeros((img[1],img[0]-300), np.uint8)
         for color in self.colors:
             mask = mask | cv2.inRange(hsv, color.lowerBound, color.upperBound)
         mask = cv2.erode(mask, None, iterations=2)

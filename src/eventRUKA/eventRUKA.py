@@ -209,8 +209,8 @@ class PhraseGenerator:
         return next(self.generator)
 
 
-eventRuka("192.168.252.226", 9559)
+# eventRuka("192.168.252.226", 9559)
 # eventRuka("192.168.252.62", 9559)
-# eventRuka("192.168.253.155", 9559)
+eventRuka("192.168.253.155", 9559)
 # eventRuka("192.168.253.80", 9559)
 # eventRuka("NaoThree.local", 9559)

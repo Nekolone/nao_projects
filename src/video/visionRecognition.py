@@ -16,12 +16,24 @@ greenUpper = (70, 255, 255)
 
 blueLower = (90,150,50)
 blueUpper = (128,255,255)
+
+yellowLower = (25,120,100)
+yellowUpper = (40,255,255)
+
+red1Lower = (0,180,70)
+red1Upper = (5,255,255)
+
+red2Lower = (160,150,70)
+red2Upper = (180,255,255)
+
 pts = deque(maxlen=args["buffer"])
 
 # Use this to satrt stream
 # gst-launch-0.10 -v v4l2src device=/dev/video-top ! video/x-raw-yuv,width=640,height=480,framerate=30/1 ! ffmpegcolorspace ! jpegenc ! multipartmux! tcpserversink port=3000
 
-vs = cv2.VideoCapture("tcp://192.168.252.226:3000")
+# vs = cv2.VideoCapture("tcp://192.168.252.226:3000")
+# vs = cv2.VideoCapture("tcp://192.168.252.247:3000")
+vs = cv2.VideoCapture("tcp://192.168.252.247:3001")
 # vs = cv2.VideoCapture("tcp://192.168.253.155:3000")
 
 while True:
@@ -29,6 +41,10 @@ while True:
     # grab the current frame
     frame = vs.read()
     frame = frame[1]
+    # frame = frame[:, 150:]
+    # frame = frame[:, :-150]
+    # frame = frame[:][:240]
+    # frame = cv2.Canny(frame, threshold1=123, threshold2=123)
 
 
     # if we are viewing a video and we did not grab a frame,
@@ -39,17 +55,22 @@ while True:
         print ("i have no picture")
         break
     # color space
-    frame = imutils.resize(frame, width=640)
+    # frame = imutils.resize(frame, width=240)
     blurred = cv2.GaussianBlur(frame, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 
     # construct a mask for the color "green", then perform
     # a series of dilations and erosions to remove any small
     # blobs left in the mask
+
     gMask = cv2.inRange(hsv, greenLower, greenUpper)
     bMask = cv2.inRange(hsv, blueLower, blueUpper)
+    yMask = cv2.inRange(hsv, yellowLower, yellowUpper)
+    r1Mask = cv2.inRange(hsv, red1Lower, red1Upper)
+    r2Mask = cv2.inRange(hsv, red2Lower, red2Upper)
 
-    mask = gMask | bMask
+    mask = gMask | bMask | yMask | r1Mask | r2Mask
+    # mask = yMask
     mask = cv2.erode(mask, None, iterations=2)
     mask = cv2.dilate(mask, None, iterations=2)
 
