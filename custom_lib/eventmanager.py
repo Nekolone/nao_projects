@@ -6,7 +6,7 @@ def selfloop(f):
     def decorator(self):
         while self.loop:
             f(self)
-            time.sleep(self.sleeptime)
+            time.sleep(self.sleep_time)
     return decorator
 
 def getPhraseGenerator(randomphrasesupplier):
@@ -14,7 +14,7 @@ def getPhraseGenerator(randomphrasesupplier):
     def phraseGenerator():
         new = randomphrasesupplier()
         while old[0] == new:
-            new == randomphrasesupplier()
+            new = randomphrasesupplier()
         old[0] = new
         return new
     return phraseGenerator
