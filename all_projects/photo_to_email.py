@@ -7,8 +7,8 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from dialogmanager import *
-from eventmanager import *
+from _dialogmanager import *
+from _eventmanager import *
 from service import *
 
 

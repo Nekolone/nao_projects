@@ -32,7 +32,7 @@ class PictureColorDetector:
         # mask = np.zeros((img[1],img[0]),dtype = int)
         mask = np.zeros((img[1],img[0]-300), np.uint8)
         for color in self.colors:
-            mask = mask | cv2.inRange(hsv, color.lowerBound, color.upperBound)
+            mask = mask | cv2.inRange(hsv, color.lower_bound, color.upper_bound)
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -55,7 +55,7 @@ class PictureColorDetector:
 
     def _pixelColor(self, pixel):
         for color in self.colors:
-            if pixel[0] in range(color.lowerBound[0], color.upperBound[0]+1):
+            if pixel[0] in range(color.lower_bound[0], color.upper_bound[0] + 1):
                 return color.name
         raise Exception("Impossible Error, Pixel not identified")
 

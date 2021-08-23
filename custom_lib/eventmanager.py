@@ -66,10 +66,10 @@ class EventGroup:
 
 class Eventloop:
 
-    def __init__(self, sleeptime = 0.05):
+    def __init__(self, sleep_time = 0.05):
         self.generalGroup = EventGroup()
         self.event_groups = [self.generalGroup]
-        self.sleeptime = sleeptime
+        self.sleep_time = sleep_time
         self.threads = []
 
     @selfloop

@@ -23,7 +23,7 @@ def main():
 
     defState()
 
-    tts.say("give me an object and I'll say what color it is and put it into the corresponding box")
+    tts.say("give me an object and I'll say what color it is and put it into the box")
     time.sleep(2)
 
     # print objectColorDetector.getColor()

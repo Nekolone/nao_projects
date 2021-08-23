@@ -18,8 +18,8 @@ green = Color("green", (40, 150, 70), (70, 255, 255))
 blue = Color("blue", (100, 150, 50), (128, 255, 255))
 
 
-global objectColorDetector
-objectColorDetector = PictureColorDetector([green, blue], 500, 1)
+global object_color_detector
+object_color_detector = PictureColorDetector([green, blue], 500, 1)
 
 motion.stiffnessInterpolation("LShoulderPitch",0.3,0.5)
 motion.stiffnessInterpolation("LElbowRoll",0.3,0.5)
@@ -37,27 +37,27 @@ time.sleep(10)
 motion.setAngles("HeadYaw", 0   , 0.1)
 motion.setAngles("HeadPitch", 0.48, 0.1)
 # sys.exit(0)
-objColor = objectColorDetector.getColor()
+objColor = object_color_detector.getColor()
 tts.say("i think this is {} object".format(objColor))
 
 time.sleep(3)
 print "test - 1"
 motion.moveTo(0,-0.15,0)
-objColor = objectColorDetector.getColor()
+objColor = object_color_detector.getColor()
 tts.say("i think this is {} object".format(objColor))
 
 
 time.sleep(3)
 print "test - 2"
 motion.moveTo(0,-0.15,0)
-objColor = objectColorDetector.getColor()
+objColor = object_color_detector.getColor()
 tts.say("i think this is {} object".format(objColor))
 
 
 time.sleep(3)
 print "test - 3"
 motion.moveTo(0,-0.15,0)
-objColor = objectColorDetector.getColor()
+objColor = object_color_detector.getColor()
 tts.say("i think this is {} object".format(objColor))
 
 

@@ -3,8 +3,9 @@ import qi
 import eventmanager
 
 # ip = "192.168.252.226"
+ip = "192.168.252.250"
 # ip = "192.168.253.155"
-ip = "192.168.252.247"
+# ip = "192.168.252.247"
 # ip = "192.168.253.68"
 
 global video, tts, memory, motion, alife, posture, atts, touch

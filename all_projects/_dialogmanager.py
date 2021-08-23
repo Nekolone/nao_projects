@@ -2,7 +2,7 @@ from naoqi import ALProxy
 from naoqi import ALBroker
 from naoqi import ALModule
 
-from eventmanager import binary_predicate, changed_value_predicate
+from _eventmanager import binary_predicate, changed_value_predicate
 from service import asr, tts, memory, touch
 import time
 
