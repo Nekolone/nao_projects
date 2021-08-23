@@ -12,10 +12,10 @@ class Color:
 
 
 class PictureColorDetector:
-    def __init__(self, colors, size, camNum=0):
+    def __init__(self, colors, size, cam_num=0):
         self.colors = colors
         self.size = size
-        self.video_client = video.subscribeCamera("myCam", camNum, 2, 13, 10)
+        self.video_client = video.subscribeCamera("myCam", cam_num, 2, 13, 10)
 
     def get_color(self):
         img = video.getImageRemote(self.video_client)

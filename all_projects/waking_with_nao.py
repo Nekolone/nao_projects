@@ -67,8 +67,11 @@ def walking_with_nao():
     motion_group = EventGroup()
     tts_group = EventGroup(cooldown=11)
 
-    event_handler.add_event(Event(nao_exit, [], binary_predicate(lambda: touch.getStatus()[8][1], True, False), single_use=True))
-    event_handler.add_event(Event(touch_my_hand, [], binary_predicate(lambda: touch.getStatus()[18][1], True, False), single_use=True, threadable=True))
+    event_handler.add_event(
+        Event(nao_exit, [], binary_predicate(lambda: touch.getStatus()[8][1], True, False), single_use=True))
+    event_handler.add_event(
+        Event(touch_my_hand, [], binary_predicate(lambda: touch.getStatus()[18][1], True, False), single_use=True,
+              threadable=True))
 
     motion_group.add_event(Event(motion.moveTo, [10, 0, 0], get_forward, threadable=True))
     tts_group.add_event(Event(walk_phrases, ["forward"], get_forward, threadable=True, cooldown=20))
@@ -176,7 +179,8 @@ class PhraseGenerator:
         yield random.choice(
             phrases["general"] + phrases[self.oldarg] + [i for i in phrases["general_move"] if self.oldarg != "stop"])
         while True:
-            yield random.choice(phrases["general_repeat"] + phrases[self.oldarg + "_repeat"] + [i for i in phrases["general_move_repeat"] if self.oldarg != "stop"])
+            yield random.choice(phrases["general_repeat"] + phrases[self.oldarg + "_repeat"] + [i for i in phrases[
+                "general_move_repeat"] if self.oldarg != "stop"])
 
     def get_phrase(self, arg):
         if arg != self.oldarg:
