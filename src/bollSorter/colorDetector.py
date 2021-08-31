@@ -5,10 +5,10 @@ from service import video, tts, memory, motion, alife, posture, atts
 
 
 class Color:
-    def __init__(self, name, lowerBound, upperBound):
+    def __init__(self, name, lower_bound, upper_bound):
         self.name = name
-        self.lowerBound = lowerBound
-        self.upperBound = upperBound
+        self.lower_bound = lower_bound
+        self.upper_bound = upper_bound
         
 
 
