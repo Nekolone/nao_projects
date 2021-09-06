@@ -6,3 +6,4 @@ three_mul = mutiplier(3)
 
 print(three_mul(2))
 print(mutiplier(5)(3))
+
