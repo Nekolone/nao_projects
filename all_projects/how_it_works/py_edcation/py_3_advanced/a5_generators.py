@@ -8,9 +8,10 @@ next()
 (цикл for же уже включает в себя next, поэтому если мы проходимся по генератору в цикле, то прописывать next() не нужно)
 """
 
+
 def f_gen(a):
-    for i in range(1,a):
-        yield i**2
+    for i in range(1, a):
+        yield i ** 2
 
 
 a = f_gen(6)
@@ -22,8 +23,7 @@ print(next(a))
 print(next(a))
 print(next(a))
 
-
-b = (i**2 for i in range(1,6))
+b = (i ** 2 for i in range(1, 6))
 print(b)
 for i in b:
     print(i)

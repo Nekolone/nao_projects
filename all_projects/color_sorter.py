@@ -1,7 +1,9 @@
-import qi, imutils, cv2, time, sys
+import cv2
+import imutils
 import numpy as np
+
 from _eventmanager import *
-from service import video, tts, memory, motion, alife, posture, atts, touch
+from service import video, tts, motion, alife, posture, touch
 
 
 class Color:

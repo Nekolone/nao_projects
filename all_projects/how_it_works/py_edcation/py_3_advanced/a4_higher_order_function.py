@@ -22,10 +22,13 @@ def another_pprint(text):
 def call_with_five(function):
     function(5)
 
+
 """
 Принимает любую функцию, выполняет ее и возвращает функцию another_print, которую в последствии мы вызывает с 
 аргументом 'another text'
 """
+
+
 def call_foo_return_another_print(fun):
     fun()
     return lambda x: another_pprint(x)

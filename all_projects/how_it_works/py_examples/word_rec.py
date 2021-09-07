@@ -1,11 +1,10 @@
 # -*- encoding: UTF-8 -*-
 
-from naoqi import ALProxy
-from naoqi import ALBroker
-from naoqi import ALModule
+import os
+import sys
 
-import time
-import sys, os
+from naoqi import ALProxy
+
 path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
 sys.path.append(path + '\custom_lib')
 from eventmanager import *
