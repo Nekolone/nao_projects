@@ -13,6 +13,12 @@ session.connect("tcp://" + ip + ":" + "9559")
 # video = session.service( "ALVideoDevice" )
 memory = session.service("ALMemory")
 
+"""
+Color - Класс конструктор для цвета и реакции на него
+
+
+выводит в консоль цвет на который произошло срабатывание. По желанию можно сделать что угодно.
+"""
 
 class Color:
     def __init__(self, name, rgb, callback):
@@ -24,6 +30,10 @@ class Color:
 def pprint(a):
     print a
 
+"""
+в python 2.7 print по выполнению ничего не возвращает, когда как функция pprint будет возвращать чтото.
+в python3 print изменен и возвращает True
+"""
 
 def main():
     red = Color("red", [200, 0, 0, 50], lambda x: pprint("onRed"))

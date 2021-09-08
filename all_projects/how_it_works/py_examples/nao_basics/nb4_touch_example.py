@@ -8,7 +8,15 @@ session = qi.Session()
 session.connect("tcp://" + ip + ":" + "9559")
 
 """
-По нажатию на кнопку головы загараются глаза
+По нажатию на кнопку головы загораются глаза
+
+
+http://doc.aldebaran.com/2-8/naoqi/sensors/altouch.html
+http://doc.aldebaran.com/2-8/family/nao_technical/contact-sensors_naov6.html
+
+
+http://doc.aldebaran.com/2-8/naoqi/sensors/alleds.html
+http://doc.aldebaran.com/2-8/family/nao_technical/leds_naov6.html#naov6-led
 """
 
 leds = session.service("ALLeds")
